@@ -23,9 +23,9 @@ NULL
 #' @return proj The updated MADproject object with a filled
 #' \code{likelihood} slot.
 #'
+#' @importFrom np npudens
 #' @importFrom plyr daply
 #' @importFrom plyr .
-#' @import np
 #'
 #' @export
 setGeneric("calcLikelihood", function(proj, dsubset, num_realz=max(proj@realizations$rid), samples=1:proj@numSamples) {
@@ -67,6 +67,9 @@ setMethod("calcLikelihood",
 
 npLike <- function(realz, obs){
   options(np.messages=FALSE)
-  return(suppressWarnings(npudens(tdat=reshape2::dcast(realz,rid~zid,sum)[,-1],
-                 edat=as.data.frame(t(obs)))$dens))
+  options(np.tree=FALSE)
+  tdat <- reshape2::dcast(realz,rid~zid,sum)[,-1]
+  edat <- as.data.frame(t(obs))
+  dens <- npudens(tdat,edat)$dens
+  return(dens)
 }
