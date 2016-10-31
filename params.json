@@ -1,0 +1,6 @@
+{
+  "name": "anchoredDistr",
+  "tagline": "The anchoredDistr R package for Bayesian post-processing",
+  "body": "### Welcome to anchoredDistr\r\nThis R package handles the post-processing from the Bayesian Uncertainty Characterization Framework MAD#: The Method of Anchored Distributions. To learn more about MAD#, visit [our Codeplex site](http://www.codeplex.com/mad).\r\n\r\n### Installation\r\nFor easy installation, install and load the `devtools` package from CRAN, then call `install_github(\"hsavoy/anchoredDistr\")`. \r\n\r\n### Examples\r\nSee the [anchoredDistr vignette](http://hsavoy.github.io/anchoredDistr/vignettes/anchoredDistr.html) for an introduction to the R package. \r\n\r\n### Authors and Contributors\r\nHeather Savoy (@hsavoy)\r\n\r\n### Support or Contact\r\nPlease use the [issue tracker](https://github.com/hsavoy/anchoredDistr/issues) for this project to post issue tickets and feature requests. Contact Heather at frystacka@berkeley.edu for further questions.\r\n\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
