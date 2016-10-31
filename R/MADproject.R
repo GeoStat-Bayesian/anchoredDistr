@@ -1,4 +1,4 @@
-#' @include madr.R
+#' @include anchoredDistr.R
 NULL
 
 #' An S4 class to represent a MAD project

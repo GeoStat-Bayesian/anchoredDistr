@@ -1,9 +1,40 @@
 Package: anchoredDistr
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Post-processing for the Method of Anchored Distributions
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Heather Savoy
+Maintainer: Heather Savoy <frystacka@berkeley.edu>
+Description: Reads MAD# result databases, performs dimension reduction on
+    inversion data, calculates likelihoods and posteriors, tests for convergence.
+    Also generates plots and reports to summarize results.
+Depends:
+    R (>= 3.1.0)
+License: MIT + file LICENSE
 LazyData: TRUE
+Imports:
+    np,
+    RSQLite,
+    DBI,
+    methods,
+    graphics,
+    stats,
+    reshape2,
+    Rmisc,
+    ggplot2,
+    plyr,
+    dplyr
+Collate:
+    'anchoredDistr.R'
+    'MADproject.R'
+    'calcLikelihood.R'
+    'calcPosterior.R'
+    'data.R'
+    'plot.R'
+    'readMAD.R'
+    'reduceData.R'
+    'test_convergence.R'
+RoxygenNote: 5.0.1.9000
+Suggests:
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

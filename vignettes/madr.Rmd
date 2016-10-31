@@ -1,0 +1,120 @@
+---
+title: "anchoredDistr"
+author: "Heather Savoy"
+date: "`r format(Sys.time(), '%a %b %d %Y')`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{anchoredDistr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+The `anchoredDistr` package is intended to handle the post-processing of projects created by MAD#, the software implmentation of the Method of Anchored distributions (see our [Codeplex site](http://www.codeplex.com/mad)). 
+
+However, the package is in early development and as such only has the following features:
+
+- Reading the MAD# databases into a `MADproject` S4 class object
+- Calculating non-parametric likelihood values using the `np` package 
+- Testing convergence of likelihood values as a function of the number of realizations
+- Calculating posterior distributions
+- Generating plots for the observations, realizations, and posteriors
+
+while making the following assumptions:
+
+- There is either multiple measurement locations with no time dependence or only one measurement location with a time series of data.
+- The inversion data consist of the multi-well measurements, a subset of timesteps from the single measurement location's time series, a parameter-less function (e.g. `min`) of that time series, or a function to be fitted to the time series (e.g. `matern`). 
+
+## Vignette Info
+
+This vingnette will step through an example of applying `anchoredDistr` using the dataset `pumping` which contains results from a MAD# project pertaining to characterizing an aquifer's mean natural-log hydraulic conductivity by using a time series of drawdown (change in hydraulic head) at a monitoring well in the field as inversion data. The `MADproject` object has slots `numSamples`, `numAnchors`, `numTheta`, `observations`, `priors`, `true values`, `numLocations` and `realizations` filled. Normally, the function `readMAD` would be used to fill in the object from databases produced by MAD#, but this has done already for `pumping` for a more portable example. This also helps show that the use of MAD# is not entirely necessary: you can fill in a `MADproject` object with data from another application and still apply the MAD analysis. 
+```{r}
+library(np)
+library(devtools)
+install_github("hsavoy/anchoredDistr")
+library(anchoredDistr)
+data(pumping)
+```
+
+## Viewing Data
+The `plot` function can be used to view different data from the `MADproject` object. Pass the object as the first argument followed  by
+
+- nothing: yields all available plots given data
+- `"observations"`: yields a plot of the observation as a function of time step.
+- `"realizations"`: yields a plot of the samples' realizations as a polygon representing the interquartile ranges of the realization values as a function of the time steps. Only works if `@numSamples` is less than six. The observations is also plotted for comparison.
+- `"posterior"`: yields the marginal posterior distributions for the samples. 
+- `"prior"`: yields the marginal prior distributions for the samples.
+
+Below is an example of requesting to plot the realizations for the `pumping` dataset.
+```{r, fig.width=7.2, fig.height=4 }
+plotMAD(pumping, "realizations")
+```
+ 
+## Applying MAD
+The `anchoredDistr` package can take this information and calculate the posterior of the random parameter in question based on requested inversion data. Below, the 100th time step is used as the inversion data, then the posterior is calculated and plotted (again, using the `plot` function).
+
+```{r, results='hide'}
+pumping <- calcLikelihood(pumping, 100)
+pumping <- calcPosterior(pumping)
+```
+```{r, fig.width=7.2, fig.height=4}
+plotMAD(pumping, "posteriors")
+```
+
+## Applying MAD with Dimension Reduction
+The `anchoredDistr` package can take this information and calculate the posterior of the random parameter in question based on requested inversion data. Below, the minimum value in the time series is used as the inversion data, then the posterior is calculated and plotted (again, using the `plot` function). This is the same as using the 100th time step, but showcasing the ability to provide a function instead of a subset for the reduction.
+
+```{r, results='hide'}
+pumping.min <- reduceData(pumping, min)
+pumping.min <- calcLikelihood(pumping.min)
+pumping.min <- calcPosterior(pumping.min)
+```
+```{r, fig.width=7.2, fig.height=4}
+plotMAD(pumping.min, "posteriors")
+```
+
+Even more complicated functions can be passed. For example, this `matern` function:
+```{r, results='hide'}
+matern <- function(x, params){
+  sigma <- params[1]
+  lambda <- params[2]
+  kappa <- params[3]  
+  t <- sqrt(2*kappa)*x/lambda
+  cov <-  ((sigma*(t^kappa)/gamma(kappa))*2^(1-kappa))*besselK(t,kappa)
+  return(sigma-cov)
+}
+```
+If we want to fit this `matern` function to the time series, we need to provide `nls` with initial values for the three parameters. Here is a function to estimate these initial values:
+```{r, results='hide'}
+init.matern <- function(x){
+  params<- c()
+  params[1] <- min(x)
+  params[2] <- min(10, tail(which(x > 0.3*min(x)),1)) 
+  params[3] <- 0.5
+  return(params)
+}
+```
+We can pass these two functions to `reduceData` for fitting a matern model to each time series and performing the inversion with the three parameters:
+```{r, results='hide'}
+pumping.matern <- reduceData(pumping, matern, init.matern, lower=c(-Inf,1,0.1), upper=c(0,100,3), algorithm="port")
+```
+```{r, fig.width=7.2, fig.height=8}
+plotMAD(pumping.matern, "realizations")
+```
+```{r, results='hide'}
+pumping.matern <- calcLikelihood(pumping.matern)
+pumping.matern <- calcPosterior(pumping.matern)
+```
+```{r, fig.width=7.2, fig.height=4}
+plotMAD(pumping.matern, "posteriors")
+```
+
+## Convergence testing
+In order to assess the convergence of the likelihood values, you can call the 
+`test_convergence` function that will take a MADproject object and calculate
+likelihood values for a range of realization counts.
+```{r, fig.width=7.2, fig.height=4, message=FALSE, results='hide'}
+test_convergence(pumping.matern)
+```
+
+

@@ -3,7 +3,7 @@ NULL
 
 #' Calculate the posterior for a \code{MADproject} object.
 #'
-#' \code{calcPosterior} returns the posterior values for each sample
+#' \code{calcPosterior} returns a MADproject object with the posterior values for each sample
 #'
 #' @param proj The \code{MADproject} object with the \code{likelihood}
 #' slot filled.
@@ -11,13 +11,15 @@ NULL
 #' \code{posterior} slot filled.
 #'
 #' @export
-setGeneric("calcPosterior", function(proj, likes) {
+setGeneric("calcPosterior", function(proj) {
   standardGeneric("calcPosterior")
 })
 
+#' @describeIn calcPosterior Calculate the posterior value for each sample
 setMethod("calcPosterior",
           signature(proj="MADproject"),
           function(proj) {
+            priordens <- like <- tid <- ptotal <- sid <- name <- priorvalue <- post <- NULL
             postdata <- merge(proj@priors,
                               proj@likelihoods)
             postdata <- dplyr::mutate(postdata, prod=priordens*like)

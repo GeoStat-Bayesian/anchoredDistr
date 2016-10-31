@@ -3,8 +3,9 @@ NULL
 
 #' Calculate the likelihood for the samples in a MADproject object.
 #'
-#' \code{calcLikelihood} returns the likelihood values based on the
-#' observation and realization data in MADproject or, optionally,
+#' \code{calcLikelihood} returns an updated MADproject with
+#' the likelihood values based on the
+#' observation and realization data in the MADproject or, optionally,
 #' a subset thereof.
 #'
 #' The likelihood calculation utilizes the \pkg{np} package for non-
@@ -27,13 +28,16 @@ NULL
 #' @import np
 #'
 #' @export
-setGeneric("calcLikelihood", function(proj, dsubset, ...) {
+setGeneric("calcLikelihood", function(proj, dsubset, num_realz, samples) {
   standardGeneric("calcLikelihood")
 })
 
+#' @describeIn calcLikelihood Calculates the likelihood using a subset \code{dsubset}
+#'  of inversion data \code{zid}
 setMethod("calcLikelihood",
           signature(proj="MADproject", dsubset="numeric"),
           function(proj, dsubset, num_realz=max(proj@realizations$rid), samples=1:proj@numSamples) {
+            sid <- rid <- zid <- NULL
             use <- subset(proj@realizations,
                           sid %in% samples & rid <= num_realz & zid %in% dsubset)
             suppressWarnings(proj@likelihoods <- data.frame(sid=unique(use$sid),
@@ -45,9 +49,11 @@ setMethod("calcLikelihood",
           }
 )
 
+#' @describeIn calcLikelihood Calculates the likelihood using all inversion data \code{zid}
 setMethod("calcLikelihood",
           signature(proj="MADproject"),
           function(proj, num_realz=max(proj@realizations$rid), samples=1:proj@numSamples) {
+            sid <- rid <- NULL
             use <- subset(proj@realizations,
                           sid %in% samples & rid <= num_realz)
             proj@likelihoods <- data.frame(sid=unique(use$sid),

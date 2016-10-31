@@ -9,28 +9,30 @@ NULL
 #'
 #' @param proj The MADproject object with the slots \code{madname},
 #'   \code{resultname}, and \code{xpath} specified.
+#' @param location The measurement ID(s) to be read from the MAD# databases
 #' @return proj An updated MADproject object with slots \code{numTimesteps},
 #'    \code{numLocations}, \code{numSamples}, \code{numAnchors},
 #'    \code{numTheta}, \code{observations}, \code{priors},
 #'    \code{truevalues} (if present),
 #'    and \code{realizations} filled in from the MAD# databases.
 #'
-#' @importFrom np npudens
-#' @importFrom np npudensbw
+#' @import np
+#' @import plyr
 #'
 #' @export
 setGeneric("readMAD", function(proj, location) {
   standardGeneric("readMAD")
 })
 
+#' @describeIn readMAD Reads the MAD# databases for information related to \code{location}
 setMethod("readMAD",
           signature(proj="MADproject", location="numeric"),
           function(proj, location) {
+            variable <- NULL
             #Setup database
             database <- paste(proj@xpath,"/",proj@madname,"_",proj@resultname,".xResult",sep="")
             datasample <- paste(proj@xpath,"/",proj@resultname,"/",proj@madname,"_",proj@resultname,sep="")
-            drv <- DBI::dbDriver("SQLite")
-            con <- RSQLite::dbConnect(drv, dbname =database)
+            con <- RSQLite::dbConnect(DBI::dbDriver("SQLite"), dbname =database)
             #Read project specifics
             proj@numLocations <- as.numeric(RSQLite::dbGetQuery( con,'select count(*) from selection' ))
             proj@numTimesteps <- as.numeric(RSQLite::dbGetQuery( con,'select count(*) from selectionvalues' ))/proj@numLocations
@@ -48,7 +50,7 @@ setMethod("readMAD",
             for(sample in 1:proj@numSamples){
               dbs=paste(datasample,sample,".xdata",sep='')
               if (file.exists(dbs)){
-                consa <- RSQLite::dbConnect(drv, dbname =dbs)
+                consa <- RSQLite::dbConnect(DBI::dbDriver("SQLite"), dbname =dbs)
 
                 sql1=paste("select sv.idselectionvalues from  likelihoodselecgroup sv where  sv.idlikegroup=",1," order by sv.idselectionvalues",sep='');
                 res<- RSQLite::dbSendQuery(con,sql1)
@@ -83,13 +85,13 @@ setMethod("readMAD",
             }
             #Read priors
             param.names <- as.character(unlist(RSQLite::dbGetQuery( con,"SELECT DISTINCT fieldname FROM priordata")))
-            priordata <- as.data.frame(t(adply(param.names, .margin=1, .id=NULL,
+            priordata <- as.data.frame(t(adply(param.names, .margins=1, .id=NULL,
                                 function(name){
                     return(RSQLite::dbGetQuery( con,paste0("SELECT value FROM priordata WHERE fieldname like '",name,"'"))[1:proj@numSamples,1])
                   }
             )))
             priordata$sid <- 1:proj@numSamples
-            priordata <- melt(priordata, "sid")
+            priordata <- reshape2::melt(priordata, "sid")
             tmp <- as.data.frame(dlply(priordata, .(variable), function(param){
               npudens(tdat=param$value,
                       edat=param$value)$dens
@@ -97,7 +99,7 @@ setMethod("readMAD",
 
 
             tmp$sid <- 1:proj@numSamples
-            tmp2 <- melt(tmp,"sid")
+            tmp2 <- reshape2::melt(tmp,"sid")
             tmp2$tid <- unlist(lapply(strsplit(as.character(tmp2$variable), "V"),
                                       function(x){x[-1]}))
             proj@priors <- cbind(tmp2[,-2],name=param.names[as.numeric(tmp2$tid)],

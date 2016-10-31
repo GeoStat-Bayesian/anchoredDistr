@@ -1,8 +1,8 @@
-#' madr example data
+#' anchoredDistr example data
 #'
 #' A dataset containing a MADproject object called 'pumping'
 #'
-#' @format #' A MADproject object with an observed time series, three
+#' @format A MADproject object with an observed time series, three
 #' prior samples, realizations for each sample, and true values for
 #' validation where the parameter to be inferred is the global mean
 #' of the natural log conductivity of a 2D aquifer.
@@ -15,7 +15,7 @@
 #' @source NULL
 "pumping"
 
-#' madr example data
+#' anchoredDistr example data
 #'
 #' A dataset containing a MADproject object called 'tutorial'
 #'

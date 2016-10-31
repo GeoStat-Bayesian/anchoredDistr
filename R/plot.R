@@ -17,33 +17,38 @@ NULL
 #' @return NULL
 #'
 #' @import ggplot2
-#' @importFrom Rmisc multiplot
 #' @importFrom plyr dlply
+#' @importFrom Rmisc multiplot
 #'
 #' @export
-setGeneric("plot")
+setGeneric("plotMAD", function(x,y) {
+  standardGeneric("plotMAD")
+})
 
-setMethod("plot",
+#' @describeIn plotMAD Plots all available slots in the MADproject object
+setMethod("plotMAD",
           signature(x="MADproject"),   #plot all available plots
-          function(x,...) {
+          function(x) {
             #Plot observations
             if(length(x@observations) > 0){
-              plot(x,"observations",...)
+              plotMAD(x,"observations")
               #Plot realizations if not too many samples
               if((x@numSamples < 5)) {
-                plot(x,"realizations",...)
+                plotMAD(x,"realizations")
               }
             }
             #Plot priors
-            plot(x, "priors")
+            plotMAD(x, "priors")
             #Plot posterior
-            if(length(x@posteriors) > 0) plot(x, "posteriors")
+            if(length(x@posteriors) > 0) plotMAD(x, "posteriors")
           }
 )
 
-setMethod("plot",
+#' @describeIn plotMAD Plots the \code{y} slot in the MADproject object
+setMethod("plotMAD",
           signature(x="MADproject", y="character"),
-          function(x,y,...) {
+          function(x,y) {
+            time <- sid <- zid <- value <- p25 <- p75 <- priorvalue <- post <- priordens <-  NULL
             switch(y,
                    observations = {
                      if(length(x@observations) == x@numTimesteps){
@@ -59,8 +64,8 @@ setMethod("plot",
                      }
                      if(length(x@observations) == x@numTimesteps){  #Time series
                          diff <- dplyr::summarise(dplyr::group_by(x@realizations, sid, zid),
-                                   p25=quantile(value,probs=0.25),
-                                   p75=quantile(value,probs=0.75))
+                                   p25=stats::quantile(value,probs=0.25),
+                                   p75=stats::quantile(value,probs=0.75))
                          diff$obs <- x@observations
 
                         plots <- plyr::dlply(diff, "sid", function(d){
@@ -116,7 +121,7 @@ setMethod("plot",
                                     function(d){
                                       ggplot(d, aes(priorvalue,y=priordens))  +
                                       geom_bar(stat="identity", width=1/length(d$priorvalue)) +
-                                        geom_density(aes(priorvalue,..density..),fill=NA, colour="red")+
+                                        geom_density(aes(priorvalue,~..density..),fill=NA, colour="red")+
                                         xlab(unique(d$name)) + ylab("density")
                                     }
                      )

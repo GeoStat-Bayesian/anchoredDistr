@@ -6,7 +6,7 @@ NULL
 #'
 #' \code{reduceData} returns a modifed \code{MADproject}
 #' object where the \code{observations} and \code{realizations}
-#' slots are replaced
+#' slots are replaced by a lower-dimensional representation
 #'
 #' @param proj \code{MADproject} object that has been filled by
 #' MAD# databases
@@ -21,15 +21,18 @@ NULL
 #' for inversion
 #'
 #' @importFrom plyr ddply
+#' @import stats
 #'
 #' @export
 setGeneric("reduceData", function(proj, method, params, ...) {
   standardGeneric("reduceData")
 })
 
+#' @describeIn reduceData Fit \code{method} without any parameters (e.g, \code{min})
 setMethod("reduceData",
           signature(proj="MADproject", method="function"),
           function(proj, method) {
+            sid <- rid <- NULL
             proj@observations <- match.fun(method)(proj@observations)
             reduced <- ddply(proj@realizations, .(sid,rid),
                                        function(df){match.fun(method)(df$value)}
@@ -42,9 +45,11 @@ setMethod("reduceData",
           }
 )
 
+#' @describeIn reduceData Fit \code{method} with parameters and inital guesses for the parameter values
 setMethod("reduceData",
           signature(proj="MADproject", method="function", params="function"),
           function(proj, method, params, ...) {
+            sid <- rid <- NULL
             fit <- nls(y~match.fun(method)(t,init.params),
                 data=data.frame(t=1:proj@numTimesteps,y=proj@observations),
                 start=list(init.params=match.fun(params)(proj@observations)),
