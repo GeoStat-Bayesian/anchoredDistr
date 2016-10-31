@@ -7,13 +7,13 @@
 \alias{calcLikelihood,MADproject,numeric-method}
 \title{Calculate the likelihood for the samples in a MADproject object.}
 \usage{
-calcLikelihood(proj, dsubset, num_realz, samples)
+calcLikelihood(proj, dsubset, num_realz = max(proj@realizations$rid),
+  samples = 1:proj@numSamples)
 
 \S4method{calcLikelihood}{MADproject,numeric}(proj, dsubset,
   num_realz = max(proj@realizations$rid), samples = 1:proj@numSamples)
 
-\S4method{calcLikelihood}{MADproject,ANY}(proj,
-  num_realz = max(proj@realizations$rid), samples = 1:proj@numSamples)
+\S4method{calcLikelihood}{MADproject,ANY}(proj, num_realz, samples)
 }
 \arguments{
 \item{proj}{The MADproject object with data read from the MAD# databases.}

@@ -28,7 +28,7 @@ NULL
 #' @import np
 #'
 #' @export
-setGeneric("calcLikelihood", function(proj, dsubset, num_realz, samples) {
+setGeneric("calcLikelihood", function(proj, dsubset, num_realz=max(proj@realizations$rid), samples=1:proj@numSamples) {
   standardGeneric("calcLikelihood")
 })
 
@@ -36,7 +36,7 @@ setGeneric("calcLikelihood", function(proj, dsubset, num_realz, samples) {
 #'  of inversion data \code{zid}
 setMethod("calcLikelihood",
           signature(proj="MADproject", dsubset="numeric"),
-          function(proj, dsubset, num_realz=max(proj@realizations$rid), samples=1:proj@numSamples) {
+          function(proj, dsubset, num_realz, samples) {
             sid <- rid <- zid <- NULL
             use <- subset(proj@realizations,
                           sid %in% samples & rid <= num_realz & zid %in% dsubset)
@@ -52,7 +52,7 @@ setMethod("calcLikelihood",
 #' @describeIn calcLikelihood Calculates the likelihood using all inversion data \code{zid}
 setMethod("calcLikelihood",
           signature(proj="MADproject"),
-          function(proj, num_realz=max(proj@realizations$rid), samples=1:proj@numSamples) {
+          function(proj, num_realz, samples) {
             sid <- rid <- NULL
             use <- subset(proj@realizations,
                           sid %in% samples & rid <= num_realz)

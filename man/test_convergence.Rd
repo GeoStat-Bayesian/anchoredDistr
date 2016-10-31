@@ -7,13 +7,13 @@
 \alias{test_convergence,MADproject,numeric-method}
 \title{Test (visually) the convergence of a MADproject object.}
 \usage{
-test_convergence(proj, dsubset, samples, NR, NS)
+test_convergence(proj, dsubset, samples, NR = 10, NS = 7)
 
 \S4method{test_convergence}{MADproject,numeric}(proj, dsubset,
   samples = 1:proj@numSamples, NR = 10, NS = 7)
 
 \S4method{test_convergence}{MADproject,ANY}(proj, samples = 1:proj@numSamples,
-  NR = 10, NS = 7)
+  NR, NS)
 }
 \arguments{
 \item{proj}{The MADproject object to be tested.}
