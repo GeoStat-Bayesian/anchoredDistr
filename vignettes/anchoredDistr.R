@@ -1,6 +1,8 @@
+## ---- eval=FALSE---------------------------------------------------------
+#  library(devtools)
+#  install_github("hsavoy/anchoredDistr")
+
 ## ------------------------------------------------------------------------
-library(devtools)
-install_github("hsavoy/anchoredDistr")
 library(anchoredDistr)
 data(pumping)
 
@@ -53,4 +55,7 @@ pumping.matern <- calcPosterior(pumping.matern)
 
 ## ---- fig.width=7.2, fig.height=4----------------------------------------
 plotMAD(pumping.matern, "posteriors")
+
+## ---- fig.width=7.2, fig.height=4, message=FALSE, results='hide'---------
+test_convergence(pumping.matern)
 

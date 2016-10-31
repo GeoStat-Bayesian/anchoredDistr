@@ -28,15 +28,17 @@ while making the following assumptions:
 ## Vignette Info
 
 This vingnette will step through an example of applying `anchoredDistr` using the dataset `pumping` which contains results from a MAD# project pertaining to characterizing an aquifer's mean natural-log hydraulic conductivity by using a time series of drawdown (change in hydraulic head) at a monitoring well in the field as inversion data. The `MADproject` object has slots `numSamples`, `numAnchors`, `numTheta`, `observations`, `priors`, `true values`, `numLocations` and `realizations` filled. Normally, the function `readMAD` would be used to fill in the object from databases produced by MAD#, but this has done already for `pumping` for a more portable example. This also helps show that the use of MAD# is not entirely necessary: you can fill in a `MADproject` object with data from another application and still apply the MAD analysis. 
-```{r}
+```{r, eval=FALSE}
 library(devtools)
 install_github("hsavoy/anchoredDistr")
+```
+```{r}
 library(anchoredDistr)
 data(pumping)
 ```
 
 ## Viewing Data
-The `plot` function can be used to view different data from the `MADproject` object. Pass the object as the first argument followed  by
+The `plotMAD` function can be used to view different data from the `MADproject` object. Pass the object as the first argument followed  by
 
 - nothing: yields all available plots given data
 - `"observations"`: yields a plot of the observation as a function of time step.
@@ -50,7 +52,7 @@ plotMAD(pumping, "realizations")
 ```
  
 ## Applying MAD
-The `anchoredDistr` package can take this information and calculate the posterior of the random parameter in question based on requested inversion data. Below, the 100th time step is used as the inversion data, then the posterior is calculated and plotted (again, using the `plot` function).
+The `anchoredDistr` package can take this information and calculate the posterior of the random parameter in question based on requested inversion data. Below, the 100th time step is used as the inversion data, then the posterior is calculated and plotted (again, using the `plotMAD` function).
 
 ```{r, results='hide'}
 pumping <- calcLikelihood(pumping, 100)
@@ -61,7 +63,7 @@ plotMAD(pumping, "posteriors")
 ```
 
 ## Applying MAD with Dimension Reduction
-The `anchoredDistr` package can take this information and calculate the posterior of the random parameter in question based on requested inversion data. Below, the minimum value in the time series is used as the inversion data, then the posterior is calculated and plotted (again, using the `plot` function). This is the same as using the 100th time step, but showcasing the ability to provide a function instead of a subset for the reduction.
+The `anchoredDistr` package can take this information and calculate the posterior of the random parameter in question based on requested inversion data. Below, the minimum value in the time series is used as the inversion data, then the posterior is calculated and plotted (again, using the `plotMAD` function). This is the same as using the 100th time step, but showcasing the ability to provide a function instead of a subset for the reduction.
 
 ```{r, results='hide'}
 pumping.min <- reduceData(pumping, min)
