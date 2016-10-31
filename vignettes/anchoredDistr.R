@@ -1,8 +1,6 @@
-## ----eval=FALSE----------------------------------------------------------
-#  library(devtools)
-#  install_github("hsavoy/anchoredDistr")
-
 ## ------------------------------------------------------------------------
+library(devtools)
+install_github("hsavoy/anchoredDistr")
 library(anchoredDistr)
 data(pumping)
 

@@ -1,4 +1,4 @@
-#' @include MADproject.R
+#' @include MADproject.R calcLikelihood.R
 NULL
 
 #' Calculate the posterior for a \code{MADproject} object.

@@ -1,4 +1,4 @@
-#' @include MADproject.R
+#' @include MADproject.R calcLikelihood.R
 NULL
 
 #' Test (visually) the convergence of a MADproject object.
@@ -19,7 +19,7 @@ NULL
 #' @return NULL
 #'
 #' @export
-setGeneric("test_convergence", function(proj, dsubset, samples, NR=10, NS=7) {
+setGeneric("test_convergence", function(proj, dsubset, samples=1:proj@numSamples, NR=10, NS=7) {
   standardGeneric("test_convergence")
 })
 
@@ -27,7 +27,7 @@ setGeneric("test_convergence", function(proj, dsubset, samples, NR=10, NS=7) {
 #'  of inversion data \code{zid}
 setMethod("test_convergence",
           signature(proj="MADproject", dsubset="numeric"),
-          function(proj, dsubset, samples=1:proj@numSamples, NR, NS) {
+          function(proj, dsubset, samples, NR, NS) {
             sid <- zid <- like <- NULL
             minr <- min(daply(subset(proj@realizations,sid %in% samples & zid %in% dsubset),
                               .(sid), function(df) max(df$rid)))
@@ -48,7 +48,7 @@ setMethod("test_convergence",
 #' @describeIn test_convergence Tests the convergence using all inversion data \code{zid}
 setMethod("test_convergence",
           signature(proj="MADproject"),
-          function(proj, samples=1:proj@numSamples, NR, NS) {
+          function(proj, samples, NR, NS) {
             sid <- zid <- like <- NULL
             minr <- min(daply(subset(proj@realizations,sid %in% samples),
                               .(sid), function(df) max(df$rid)))
