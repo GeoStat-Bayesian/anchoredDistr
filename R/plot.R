@@ -48,7 +48,7 @@ setMethod("plotMAD",
 setMethod("plotMAD",
           signature(x="MADproject", y="character"),
           function(x,y) {
-            time <- sid <- zid <- value <- p25 <- p75 <- priorvalue <- post <- priordens <-  NULL
+            time <- sid <- zid <- value <- p25 <- p75 <- priorvalue <- post <- priordens <- ..density.. <- NULL
             switch(y,
                    observations = {
                      if(length(x@observations) == x@numTimesteps){
@@ -121,7 +121,7 @@ setMethod("plotMAD",
                                     function(d){
                                       ggplot(d, aes(priorvalue,y=priordens))  +
                                       geom_bar(stat="identity", width=1/length(d$priorvalue)) +
-                                        geom_density(aes(priorvalue,~..density..),fill=NA, colour="red")+
+                                        geom_density(aes(priorvalue,..density..),fill=NA, colour="red")+
                                         xlab(unique(d$name)) + ylab("density")
                                     }
                      )
