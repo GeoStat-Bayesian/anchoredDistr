@@ -112,10 +112,10 @@ plotMAD(pumping.matern, "posteriors")
 
 ## Convergence testing
 In order to assess the convergence of the likelihood values, you can call the 
-`test_convergence` function that will take a MADproject object and calculate
+`testConvergence` function that will take a MADproject object and calculate
 likelihood values for a range of realization counts.
 ```{r, fig.width=7.2, fig.height=4, message=FALSE, results='hide'}
-test_convergence(pumping.matern)
+testConvergence(pumping.matern)
 ```
 
 

@@ -31,4 +31,12 @@ the MAD# databases.
 \itemize{
 \item \code{proj = MADproject,location = numeric}: Reads the MAD# databases for information related to \code{location}
 }}
+\examples{
+\dontrun{
+example <- new("MADproject", madname="Example", resultname="results",
+xpath=getwd())
+example <- readMAD(example, 1:3) #Observations 1-3
+}
+
+}
 

@@ -15,6 +15,14 @@ NULL
 #' @param y character string from the following options: "observations",
 #' "realizations", "priors", or "posteriors"
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' data(pumping)
+#' plotMAD(pumping, "realizations")
+#' plotMAD(pumping, "priors")
+#' plotMAD(pumping, "posteriors")
+#' plotMAD(pumping)
+#' }
 #'
 #' @import ggplot2
 #' @importFrom plyr dlply

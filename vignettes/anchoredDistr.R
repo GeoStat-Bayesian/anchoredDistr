@@ -57,5 +57,5 @@ pumping.matern <- calcPosterior(pumping.matern)
 plotMAD(pumping.matern, "posteriors")
 
 ## ---- fig.width=7.2, fig.height=4, message=FALSE, results='hide'---------
-test_convergence(pumping.matern)
+testConvergence(pumping.matern)
 

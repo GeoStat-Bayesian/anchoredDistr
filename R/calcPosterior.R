@@ -9,6 +9,12 @@ NULL
 #' slot filled.
 #' @return proj An updated \code{MADproject} object with the
 #' \code{posterior} slot filled.
+#' @examples
+#' \dontrun{
+#' data(pumping)
+#' pumping.100 <- calcLikelihood(pumping, 100)
+#' pumping.100 <- calcPosterior(pumping.100)
+#' }
 #'
 #' @export
 setGeneric("calcPosterior", function(proj) {

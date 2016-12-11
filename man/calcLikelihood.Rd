@@ -50,4 +50,11 @@ of inversion data \code{zid}
 
 \item \code{proj = MADproject,dsubset = ANY}: Calculates the likelihood using all inversion data \code{zid}
 }}
+\examples{
+\dontrun{
+data(pumping)
+pumping <- calcLikelihood(pumping, 100) #Inversion data as time step 100
+}
+
+}
 

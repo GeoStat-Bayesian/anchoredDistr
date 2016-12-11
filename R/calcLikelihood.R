@@ -22,6 +22,11 @@ NULL
 #' \code{realizations} slot)
 #' @return proj The updated MADproject object with a filled
 #' \code{likelihood} slot.
+#' @examples
+#' \dontrun{
+#' data(pumping)
+#' pumping <- calcLikelihood(pumping, 100) #Inversion data as time step 100
+#' }
 #'
 #' @importFrom np npudens
 #' @importFrom plyr daply

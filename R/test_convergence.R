@@ -3,7 +3,7 @@ NULL
 
 #' Test (visually) the convergence of a MADproject object.
 #'
-#' \code{test_convergence} returns a plot to help the user visualize if
+#' \code{testConvergence} returns a plot to help the user visualize if
 #' there are enough realizations in the project for converged likelihood
 #' values
 #'
@@ -17,15 +17,20 @@ NULL
 #' @param NS The number of randomly selected samples to test (defaults to 7)
 #' out of \code{samples}
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' data(pumping)
+#' testConvergence(pumping, dsubset=1:3)  #Inversion data as time steps 1-3
+#' }
 #'
 #' @export
-setGeneric("test_convergence", function(proj, dsubset, samples=1:proj@numSamples, NR=10, NS=7) {
-  standardGeneric("test_convergence")
+setGeneric("testConvergence", function(proj, dsubset, samples=1:proj@numSamples, NR=10, NS=7) {
+  standardGeneric("testConvergence")
 })
 
-#' @describeIn test_convergence Tests the convergence using a subset \code{dsubset}
+#' @describeIn testConvergence Tests the convergence using a subset \code{dsubset}
 #'  of inversion data \code{zid}
-setMethod("test_convergence",
+setMethod("testConvergence",
           signature(proj="MADproject", dsubset="numeric"),
           function(proj, dsubset, samples, NR, NS) {
             sid <- zid <- like <- NULL
@@ -45,8 +50,8 @@ setMethod("test_convergence",
           }
 )
 
-#' @describeIn test_convergence Tests the convergence using all inversion data \code{zid}
-setMethod("test_convergence",
+#' @describeIn testConvergence Tests the convergence using all inversion data \code{zid}
+setMethod("testConvergence",
           signature(proj="MADproject"),
           function(proj, samples, NR, NS) {
             sid <- zid <- like <- NULL

@@ -16,9 +16,14 @@ NULL
 #' \code{method} has parameters
 #' @param ... addtional arguments as needed for \code{nls} to
 #' fit \code{method} to the data
-#'
 #' @return proj \code{MADproject} object with reduced dimensions
 #' for inversion
+#' @examples
+#' \dontrun{
+#' data(pumping)
+#' pumping.min <- reduceData(pumping, min)
+#' plotMAD(pumping.min, "realizations")
+#' }
 #'
 #' @importFrom plyr ddply
 #' @import stats

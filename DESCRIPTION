@@ -5,8 +5,8 @@ Version: 0.1.0
 Author: Heather Savoy
 Maintainer: Heather Savoy <frystacka@berkeley.edu>
 Description: Reads MAD# result databases, performs dimension reduction on
-    inversion data, calculates likelihoods and posteriors, tests for convergence.
-    Also generates plots and reports to summarize results.
+    inversion data, calculates likelihoods and posteriors, and tests for convergence.
+    Also generates plots to summarize results.
 Depends:
     R (>= 3.1.0)
 License: MIT + file LICENSE
@@ -33,7 +33,7 @@ Collate:
     'readMAD.R'
     'reduceData.R'
     'test_convergence.R'
-RoxygenNote: 5.0.1.9000
+RoxygenNote: 5.0.1
 Suggests:
     knitr,
     rmarkdown

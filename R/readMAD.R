@@ -15,6 +15,12 @@ NULL
 #'    \code{numTheta}, \code{observations}, \code{priors},
 #'    \code{truevalues} (if present),
 #'    and \code{realizations} filled in from the MAD# databases.
+#' @examples
+#' \dontrun{
+#' example <- new("MADproject", madname="Example", resultname="results",
+#' xpath=getwd())
+#' example <- readMAD(example, 1:3) #Observations 1-3
+#' }
 #'
 #' @import np
 #' @import plyr
