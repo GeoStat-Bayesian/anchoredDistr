@@ -1,5 +1,23 @@
 #' anchoredDistr example data
 #'
+#' A dataset containing data to create a MADproject object
+#' called 'pumping' without a MAD# database
+#'
+#' @format A vector of observations of indirect data, a
+#' data.frame of prior distribution samples, and a
+#' data.frame of simualted realizations of indirect data
+#' based on the samples.
+#'
+#' \describe{
+#'   \item{obs}{a time series of drawdown, in meters}
+#'   \item{priors}{a data.frame of prior samples and their probability density}
+#'   \item{realizations}{the ensemble of simulated drawdown time series for the samples}
+#' }
+#' @source NULL
+"pumping"
+
+#' anchoredDistr example data
+#'
 #' A dataset containing a MADproject object called 'pumping'
 #'
 #' @format A MADproject object with an observed time series, three

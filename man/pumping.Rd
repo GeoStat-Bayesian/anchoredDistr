@@ -4,20 +4,25 @@
 \name{pumping}
 \alias{pumping}
 \title{anchoredDistr example data}
-\format{A MADproject object with an observed time series, three
-prior samples, realizations for each sample, and true values for
-validation where the parameter to be inferred is the global mean
-of the natural log conductivity of a 2D aquifer.
+\format{A vector of observations of indirect data, a
+data.frame of prior distribution samples, and a
+data.frame of simualted realizations of indirect data
+based on the samples.
 
 \describe{
-  \item{@observations}{a time series of drawdown, in meters}
-  \item{@numSamples}{the value 3, [unitless]}
-  \item{@realizations}{the ensemble of simulated drawdown time series}
+  \item{obs}{a time series of drawdown, in meters}
+  \item{priors}{a data.frame of prior samples and their probability density}
+  \item{realizations}{the ensemble of simulated drawdown time series for the samples}
 }}
 \usage{
 pumping
+
+pumping
 }
 \description{
+A dataset containing data to create a MADproject object
+called 'pumping' without a MAD# database
+
 A dataset containing a MADproject object called 'pumping'
 }
 \keyword{datasets}

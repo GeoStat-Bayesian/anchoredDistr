@@ -23,7 +23,6 @@ NULL
 #' }
 #'
 #' @import np
-#' @import plyr
 #'
 #' @export
 setGeneric("readMAD", function(proj, location) {
@@ -34,7 +33,7 @@ setGeneric("readMAD", function(proj, location) {
 setMethod("readMAD",
           signature(proj="MADproject", location="numeric"),
           function(proj, location) {
-            variable <- NULL
+            variable <- . <- NULL
             #Setup database
             database <- paste(proj@xpath,"/",proj@madname,"_",proj@resultname,".xResult",sep="")
             datasample <- paste(proj@xpath,"/",proj@resultname,"/",proj@madname,"_",proj@resultname,sep="")
@@ -91,14 +90,14 @@ setMethod("readMAD",
             }
             #Read priors
             param.names <- as.character(unlist(RSQLite::dbGetQuery( con,"SELECT DISTINCT fieldname FROM priordata")))
-            priordata <- as.data.frame(t(adply(param.names, .margins=1, .id=NULL,
+            priordata <- as.data.frame(t(plyr::adply(param.names, .margins=1, .id=NULL,
                                 function(name){
                     return(RSQLite::dbGetQuery( con,paste0("SELECT value FROM priordata WHERE fieldname like '",name,"'"))[1:proj@numSamples,1])
                   }
             )))
             priordata$sid <- 1:proj@numSamples
             priordata <- reshape2::melt(priordata, "sid")
-            tmp <- as.data.frame(dlply(priordata, .(variable), function(param){
+            tmp <- as.data.frame(plyr::dlply(priordata, .(variable), function(param){
               npudens(tdat=param$value,
                       edat=param$value)$dens
             }))

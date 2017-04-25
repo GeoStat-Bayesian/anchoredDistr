@@ -10,7 +10,7 @@ vignette: >
 ---
 
 
-The `anchoredDistr` package is intended to handle the post-processing of projects created by MAD#, the software implmentation of the Method of Anchored distributions (see our [Codeplex site](http://www.codeplex.com/mad)). 
+The `anchoredDistr` package is intended to handle the post-processing of projects created by MAD#, the software implmentation of the Method of Anchored distributions (see our [Codeplex site](http://www.codeplex.com/mad)). Similarly structured data not extracted from the MAD# software can also be used with some formatting. 
 
 However, the package is in early development and as such only has the following features:
 
@@ -23,18 +23,51 @@ However, the package is in early development and as such only has the following 
 while making the following assumptions:
 
 - There is either multiple measurement locations with no time dependence or only one measurement location with a time series of data.
-- The inversion data consist of the multi-well measurements, a subset of timesteps from the single measurement location's time series, a parameter-less function (e.g. `min`) of that time series, or a function to be fitted to the time series (e.g. `matern`). 
+- The inversion data supported consist of the multi-well measurements, a subset of timesteps from the single measurement location's time series, a parameter-less function (e.g. `min`) of that time series, or a function to be fitted to the time series (e.g. `matern`). 
 
 ## Vignette Info
 
-This vingnette will step through an example of applying `anchoredDistr` using the dataset `pumping` which contains results from a MAD# project pertaining to characterizing an aquifer's mean natural-log hydraulic conductivity by using a time series of drawdown (change in hydraulic head) at a monitoring well in the field as inversion data. The `MADproject` object has slots `numSamples`, `numAnchors`, `numTheta`, `observations`, `priors`, `true values`, `numLocations` and `realizations` filled. Normally, the function `readMAD` would be used to fill in the object from databases produced by MAD#, but this has done already for `pumping` for a more portable example. This also helps show that the use of MAD# is not entirely necessary: you can fill in a `MADproject` object with data from another application and still apply the MAD analysis. 
+This vignette will step through an example of applying `anchoredDistr` using the dataset `pumping`, which contains results from a MAD# project pertaining to characterizing an aquifer's mean natural-log hydraulic conductivity by using a time series of drawdown (change in hydraulic head) at a monitoring well in the field as inversion data. The `MADproject` object has slots `numSamples`, `numAnchors`, `numTheta`, `observations`, `priors`, `true values`, `numLocations` and `realizations` filled. Normally, the function `readMAD` would be used to fill in the object from databases produced by MAD#, but this has done already for `pumping` for a more portable example. This also helps show that the use of MAD# is not entirely necessary: you can fill in a `MADproject` object with data from another application and still apply the MAD analysis. 
+
+For example, we can load the package: 
 ```{r, eval=FALSE}
 library(devtools)
 install_github("hsavoy/anchoredDistr")
-```
-```{r}
 library(anchoredDistr)
+```
+and then create a MADproject object given the following minimum information: 
+
+* Observations of inversion data: For the pumping example, there is one measurement location with 100 time steps. The format required is a vector of length (number of time steps). 
+
+* Prior distribution samples: The samples of the prior distributions for each strucutural parameter and anchor used. For the pumping example, there are 50 samples of one parameter and no anchors. The required format is a data.frame with columns `sid` (the sample ID), `priordens` (the marginal density associated with the sample), `tid` (the parameter ID), `name` (the parameter name), and `priorvalue` (the sampled value of the parameter). 
+
+* Realizations: Simulated values of the inversion data based on each of the prior samples. For the pumping example. The required format is a data.frame with columns `sid` (the sample ID), `rid` (the realization ID), `zid` (the inversion data ID), and `value` (the simulated value).
+Below shows the configuration of data in the `pumping_input` data set and how it can be used to create a MADproject object without a MAD# database. 
+```{r}
+data(pumping_input) #contains obs, realizations, and priors
+head(obs)
+head(realizations)
+head(priors)
+proj <- new("MADproject",
+             numLocations = 1,
+             numTimesteps = 100,
+             numSamples   = 50,
+             numAnchors = 0,
+             numTheta = 1,
+             observations = obs,
+             realizations = realizations,
+             priors = priors)
+```
+
+However, the same data, plus more information, is available in the `pumping` dataset so it will be used for the remainder of the vignette. 
+```{r}
 data(pumping)
+```
+
+## Printing `MADproject` information
+You can use the `print` function to preview what the `MADproject` object contains: 
+```{r}
+print(pumping)
 ```
 
 ## Viewing Data
@@ -97,7 +130,7 @@ init.matern <- function(x){
 ```
 We can pass these two functions to `reduceData` for fitting a matern model to each time series and performing the inversion with the three parameters:
 ```{r, results='hide'}
-pumping.matern <- reduceData(pumping, matern, init.matern, lower=c(-Inf,1,0.1), upper=c(0,100,3), algorithm="port")
+pumping.matern <- reduceData(pumping, matern, init.matern, lower=c(-Inf,1,0.1), upper=c(0,100,5), algorithm="port")
 ```
 ```{r, fig.width=7.2, fig.height=8}
 plotMAD(pumping.matern, "realizations")

@@ -29,8 +29,7 @@ NULL
 #' }
 #'
 #' @importFrom np npudens
-#' @importFrom plyr daply
-#' @importFrom plyr .
+#' @import dplyr
 #'
 #' @export
 setGeneric("calcLikelihood", function(proj, dsubset, num_realz=max(proj@realizations$rid), samples=1:proj@numSamples) {
@@ -42,14 +41,17 @@ setGeneric("calcLikelihood", function(proj, dsubset, num_realz=max(proj@realizat
 setMethod("calcLikelihood",
           signature(proj="MADproject", dsubset="numeric"),
           function(proj, dsubset, num_realz, samples) {
-            sid <- rid <- zid <- NULL
-            use <- subset(proj@realizations,
-                          sid %in% samples & rid <= num_realz & zid %in% dsubset)
-            suppressWarnings(proj@likelihoods <- data.frame(sid=unique(use$sid),
-                                           like=daply(use, .(sid),
-                                                      npLike,
-                                                      obs=proj@observations[dsubset])
-            ))
+            if(length(proj@observations) == 0){
+              return("No observations for comparison!")
+            }
+            if(length(proj@realizations) == 0){
+              return("No realizations for comparison!")
+            }
+            sid <- rid <- zid <- . <- NULL
+            proj@likelihoods <- as.data.frame(proj@realizations %>%
+                             filter_(~sid %in% samples & rid <= num_realz & zid %in% dsubset) %>%
+                             group_by_(~sid) %>%
+                             do(data.frame(like=npLike(.,obs=proj@observations[dsubset]))))
             return(proj)
           }
 )
@@ -58,14 +60,17 @@ setMethod("calcLikelihood",
 setMethod("calcLikelihood",
           signature(proj="MADproject"),
           function(proj, num_realz, samples) {
-            sid <- rid <- NULL
-            use <- subset(proj@realizations,
-                          sid %in% samples & rid <= num_realz)
-            proj@likelihoods <- data.frame(sid=unique(use$sid),
-                                           like=daply(use, .(sid),
-                                                      npLike,
-                                                      obs=proj@observations)
-            )
+            if(length(proj@observations) == 0){
+              return("No observations for comparison!")
+            }
+            if(length(proj@realizations) == 0){
+              return("No realizations for comparison!")
+            }
+            sid <- rid <- . <- NULL
+            proj@likelihoods <- as.data.frame(proj@realizations %>%
+                                                filter_(~sid %in% samples & rid <= num_realz) %>%
+                                                group_by_(~sid) %>%
+                                                do(data.frame(like=npLike(.,obs=proj@observations))))
             return(proj)
           }
 )

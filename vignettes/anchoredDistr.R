@@ -1,10 +1,28 @@
 ## ---- eval=FALSE---------------------------------------------------------
 #  library(devtools)
 #  install_github("hsavoy/anchoredDistr")
+#  library(anchoredDistr)
 
 ## ------------------------------------------------------------------------
-library(anchoredDistr)
+data(pumping_input) #contains obs, realizations, and priors
+head(obs)
+head(realizations)
+head(priors)
+proj <- new("MADproject",
+             numLocations = 1,
+             numTimesteps = 100,
+             numSamples   = 50,
+             numAnchors = 0,
+             numTheta = 1,
+             observations = obs,
+             realizations = realizations,
+             priors = priors)
+
+## ------------------------------------------------------------------------
 data(pumping)
+
+## ------------------------------------------------------------------------
+print(pumping)
 
 ## ---- fig.width=7.2, fig.height=4----------------------------------------
 plotMAD(pumping, "realizations")
@@ -44,7 +62,7 @@ init.matern <- function(x){
 }
 
 ## ---- results='hide'-----------------------------------------------------
-pumping.matern <- reduceData(pumping, matern, init.matern, lower=c(-Inf,1,0.1), upper=c(0,100,3), algorithm="port")
+pumping.matern <- reduceData(pumping, matern, init.matern, lower=c(-Inf,1,0.1), upper=c(0,100,5), algorithm="port")
 
 ## ---- fig.width=7.2, fig.height=8----------------------------------------
 plotMAD(pumping.matern, "realizations")

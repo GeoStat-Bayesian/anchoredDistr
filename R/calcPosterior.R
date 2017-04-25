@@ -25,6 +25,9 @@ setGeneric("calcPosterior", function(proj) {
 setMethod("calcPosterior",
           signature(proj="MADproject"),
           function(proj) {
+            if(length(proj@likelihoods) == 0){
+              return("No likelihoods for comparison!")
+            }
             priordens <- like <- tid <- ptotal <- sid <- name <- priorvalue <- post <- NULL
             postdata <- merge(proj@priors,
                               proj@likelihoods)

@@ -23,6 +23,8 @@ NULL
 #' testConvergence(pumping, dsubset=1:3)  #Inversion data as time steps 1-3
 #' }
 #'
+#' @import dplyr
+#'
 #' @export
 setGeneric("testConvergence", function(proj, dsubset, samples=1:proj@numSamples, NR=10, NS=7) {
   standardGeneric("testConvergence")
@@ -33,9 +35,17 @@ setGeneric("testConvergence", function(proj, dsubset, samples=1:proj@numSamples,
 setMethod("testConvergence",
           signature(proj="MADproject", dsubset="numeric"),
           function(proj, dsubset, samples, NR, NS) {
-            sid <- zid <- like <- NULL
-            minr <- min(daply(subset(proj@realizations,sid %in% samples & zid %in% dsubset),
-                              .(sid), function(df) max(df$rid)))
+            if(length(proj@observations) == 0){
+              return("No observations for comparison!")
+            }
+            if(length(proj@realizations) == 0){
+              return("No realizations for comparison!")
+            }
+            sid <- zid <- rid <- like <- NULL
+            minr <- min((proj@realizations %>%
+              filter(sid %in% samples & zid %in% dsubset) %>%
+              group_by(sid) %>%
+              summarise(max=max(rid)))$max)
             samps <- sample(samples,min(NS,length(samples)))
             nr <- seq(ceiling(.1*minr),minr,length.out=NR)
             likes <- plyr::adply(nr, 1, function(x) calcLikelihood(proj, dsubset=dsubset,
@@ -54,9 +64,17 @@ setMethod("testConvergence",
 setMethod("testConvergence",
           signature(proj="MADproject"),
           function(proj, samples, NR, NS) {
-            sid <- zid <- like <- NULL
-            minr <- min(daply(subset(proj@realizations,sid %in% samples),
-                              .(sid), function(df) max(df$rid)))
+            if(length(proj@observations) == 0){
+              return("No observations for comparison!")
+            }
+            if(length(proj@realizations) == 0){
+              return("No realizations for comparison!")
+            }
+            sid <- zid <- rid <- like <- NULL
+            minr <- min((proj@realizations %>%
+                           filter(sid %in% samples) %>%
+                           group_by(sid) %>%
+                           summarise(max=max(rid)))$max)
             samps <- sample(samples,min(NS,length(samples)))
             nr <- seq(ceiling(.1*minr),minr,length.out=NR)
             likes <- plyr::adply(nr, 1, function(x) calcLikelihood(proj,

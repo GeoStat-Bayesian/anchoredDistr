@@ -25,7 +25,6 @@ NULL
 #' }
 #'
 #' @import ggplot2
-#' @importFrom plyr dlply
 #' @importFrom Rmisc multiplot
 #'
 #' @export
@@ -46,7 +45,7 @@ setMethod("plotMAD",
               }
             }
             #Plot priors
-            plotMAD(x, "priors")
+            if(length(x@priors) > 0) plotMAD(x, "priors")
             #Plot posterior
             if(length(x@posteriors) > 0) plotMAD(x, "posteriors")
           }
@@ -59,6 +58,9 @@ setMethod("plotMAD",
             time <- sid <- zid <- value <- p25 <- p75 <- priorvalue <- post <- priordens <- ..density.. <- NULL
             switch(y,
                    observations = {
+                     if(length(x@observations) == 0){
+                       return("No observations to print!")
+                     }
                      if(length(x@observations) == x@numTimesteps){
                       df <- data.frame(obs=x@observations,
                                        time=1:length(x@observations))
@@ -75,65 +77,62 @@ setMethod("plotMAD",
                                    p25=stats::quantile(value,probs=0.25),
                                    p75=stats::quantile(value,probs=0.75))
                          diff$obs <- x@observations
-
-                        plots <- plyr::dlply(diff, "sid", function(d){
-                          ggplot(d)  +
-                            geom_ribbon(aes(x=zid, ymin=p25,ymax=p75)) +
-                            geom_line(aes(x=zid,y=obs)) +
-                            guides(color="none") +
-                            xlab("Time steps") +
-                            ylab(paste("zb, Sample",d$sid))
-                          }
-                        )
-                        multiplot(plotlist=plots,cols=round(sqrt(x@numSamples)))
+                         ggplot(diff)  +
+                           geom_ribbon(aes(x=zid, ymin=p25,ymax=p75)) +
+                           geom_line(aes(x=zid,y=obs)) +
+                           guides(color="none") +
+                           xlab("Time steps") +
+                           ylab(paste("zb, Sample",diff$sid)) +
+                           facet_grid(sid ~ .)
                        } else if (x@numTimesteps == 1) { #steady
                          obs <- data.frame(zid=1:length(x@observations), obs=x@observations)
-                         plots <- dlply(merge(x@realizations,obs), "zid",
-                                        function(d){
-                                          ggplot(d, aes(x=value,fill=sid))  +
-                                            geom_density(alpha=0.25) +
-                                            geom_vline(aes(xintercept=obs))
-                                        }
-                         )
-                         multiplot(plotlist=plots,cols=round(sqrt(length(x@observations))))
+                         ggplot(merge(x@realizations,obs), aes(x=value,fill=sid))  +
+                           geom_density(alpha=0.25) +
+                           geom_vline(aes(xintercept=obs)) +
+                           facet_grid(zid ~ .)
                      } else {  #Reduced
-                        obs <- data.frame(zid=1:length(x@observations),
+                       obs <- data.frame(zid=1:length(x@observations),
                                           obs=x@observations)
-                         plots <- dlply(merge(x@realizations,obs), "zid",
-                                        function(d){
-                                          ggplot(d, aes(x=value, group=as.factor(sid),
-                                                        colour=as.factor(sid)))  +
-                                            geom_density(alpha=0.25) +
-                                            scale_colour_discrete(name = "Sample ID") +
-                                            geom_vline(aes(xintercept=obs)) +
-                                            xlab(paste("Parameter",d$zid))
-                                        }
-                         )
-                         multiplot(plotlist=plots,cols=round(sqrt(x@numTheta+x@numAnchors)))
+                       ggplot(merge(x@realizations,obs), aes(x=value, group=as.factor(sid),
+                                     colour=as.factor(sid)))  +
+                         geom_density(alpha=0.25) +
+                         scale_colour_discrete(name = "Sample ID") +
+                         geom_vline(aes(xintercept=obs)) +
+                         xlab(paste("Parameter",zid)) +
+                         facet_grid(. ~ zid)
                        }
                     },
                    posteriors = {
-                     plots <- dlply(merge(x@posteriors,x@truevalues), "tid",
-                                    function(d){
-                                      ggplot(d, aes(x=priorvalue, weight=post))  +
-                                        geom_density(weight=1, fill=NA, colour="red") +
-                                        geom_density(fill=NA, colour="blue") +
-                                        geom_vline(aes(xintercept = value), na.rm=TRUE) +
-                                        xlab(unique(d$name))
-                                    }
-                     )
-                     multiplot(plotlist=plots,cols=round(sqrt(x@numTheta+x@numAnchors)))
+                     if(length(x@posteriors) == 0){
+                       return("No posteriors to print!")
+                     }
+                     if(length(x@truevalues) == 0){
+                       df <- merge(x@posteriors,x@truevalues)
+                       ggplot(df, aes(x=priorvalue, weight=post))  +
+                         geom_density(weight=1, fill=NA, colour="red") +
+                         geom_density(fill=NA, colour="blue") +
+                         geom_vline(aes(xintercept = value), na.rm=TRUE) +
+                         xlab(unique(df$name)) +
+                         facet_grid(tid ~ .)
+                     } else {
+                       df <- x@posteriors
+                       ggplot(df, aes(x=priorvalue, weight=post))  +
+                         geom_density(weight=1, fill=NA, colour="red") +
+                         geom_density(fill=NA, colour="blue") +
+                         xlab(unique(df$name)) +
+                         facet_grid(tid ~ .)
+                     }
                     },
                    priors = {
-                     plots <- dlply(x@priors, "tid",
-                                    function(d){
-                                      ggplot(d, aes(priorvalue,y=priordens))  +
-                                      geom_bar(stat="identity", width=1/length(d$priorvalue)) +
-                                        geom_density(aes(priorvalue,..density..),fill=NA, colour="red")+
-                                        xlab(unique(d$name)) + ylab("density")
-                                    }
-                     )
-                     suppressWarnings(multiplot(plotlist=plots,cols=round(sqrt(x@numTheta+x@numAnchors))))
+                     if(length(x@priors) == 0){
+                       return("No priors to print!")
+                     }
+                     df <- x@priors
+                     ggplot(df, aes(priorvalue,y=priordens))  +
+                       geom_bar(stat="identity", width=1/length(df$priorvalue)) +
+                       geom_density(aes(priorvalue,..density..),fill=NA, colour="red")+
+                       xlab(unique(df$name)) + ylab("density") +
+                       facet_grid(tid ~ .)
                    }
                     )
           }
