@@ -3,8 +3,8 @@
 \docType{methods}
 \name{testConvergence}
 \alias{testConvergence}
-\alias{testConvergence,MADproject,ANY-method}
 \alias{testConvergence,MADproject,numeric-method}
+\alias{testConvergence,MADproject,ANY-method}
 \title{Test (visually) the convergence of a MADproject object.}
 \usage{
 testConvergence(proj, dsubset, samples = 1:proj@numSamples, NR = 10,
@@ -42,6 +42,7 @@ of inversion data \code{zid}
 
 \item \code{proj = MADproject,dsubset = ANY}: Tests the convergence using all inversion data \code{zid}
 }}
+
 \examples{
 \dontrun{
 data(pumping)
@@ -49,4 +50,3 @@ testConvergence(pumping, dsubset=1:3)  #Inversion data as time steps 1-3
 }
 
 }
-

@@ -35,6 +35,9 @@ library(devtools)
 install_github("hsavoy/anchoredDistr")
 library(anchoredDistr)
 ```
+```{r, echo=FALSE}
+library(anchoredDistr)
+```
 and then create a MADproject object given the following minimum information: 
 
 * Observations of inversion data: For the pumping example, there is one measurement location with 100 time steps. The format required is a vector of length (number of time steps). 
@@ -44,7 +47,7 @@ and then create a MADproject object given the following minimum information:
 * Realizations: Simulated values of the inversion data based on each of the prior samples. For the pumping example. The required format is a data.frame with columns `sid` (the sample ID), `rid` (the realization ID), `zid` (the inversion data ID), and `value` (the simulated value).
 Below shows the configuration of data in the `pumping_input` data set and how it can be used to create a MADproject object without a MAD# database. 
 ```{r}
-data(pumping_input) #contains obs, realizations, and priors
+data(pumpingInput) #contains obs, realizations, and priors
 head(obs)
 head(realizations)
 head(priors)

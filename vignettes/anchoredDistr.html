@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">anchoredDistr</h1>
 <h4 class="author"><em>Heather Savoy</em></h4>
-<h4 class="date"><em>Thu Apr 20 2017</em></h4>
+<h4 class="date"><em>Wed Jun 14 2017</em></h4>
 
 
 
@@ -100,8 +100,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>Prior distribution samples: The samples of the prior distributions for each strucutural parameter and anchor used. For the pumping example, there are 50 samples of one parameter and no anchors. The required format is a data.frame with columns <code>sid</code> (the sample ID), <code>priordens</code> (the marginal density associated with the sample), <code>tid</code> (the parameter ID), <code>name</code> (the parameter name), and <code>priorvalue</code> (the sampled value of the parameter).</p></li>
 <li><p>Realizations: Simulated values of the inversion data based on each of the prior samples. For the pumping example. The required format is a data.frame with columns <code>sid</code> (the sample ID), <code>rid</code> (the realization ID), <code>zid</code> (the inversion data ID), and <code>value</code> (the simulated value). Below shows the configuration of data in the <code>pumping_input</code> data set and how it can be used to create a MADproject object without a MAD# database.</p></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(pumping_input) <span class="co">#contains obs, realizations, and priors</span>
-<span class="kw">head</span>(obs)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(pumping_input) <span class="co">#contains obs, realizations, and priors</span></code></pre></div>
+<pre><code>## Warning in data(pumping_input): data set 'pumping_input' not found</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(obs)</code></pre></div>
 <pre><code>## [1]   0.000000  -6.771288 -16.222989 -25.283413 -32.980097 -39.244209</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(realizations)</code></pre></div>
 <pre><code>##        sid rid zid      value

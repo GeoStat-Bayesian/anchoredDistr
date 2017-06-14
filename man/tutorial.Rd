@@ -8,7 +8,6 @@
 prior samples, realizations for each sample, and true values for
 validation where the parameters to be inferred are four anchors of the
 local decimal log transmissivity of a 1D aquifer
-
 \describe{
   \item{@observations}{three head measurements, in meters}
   \item{@realizations}{the ensemble of simulated head measurements}
@@ -20,10 +19,9 @@ local decimal log transmissivity of a 1D aquifer
 \url{http://www.mad.codeplex.com/releases/}
 }
 \usage{
-tutorial
+data(tutorial)
 }
 \description{
 A dataset containing a MADproject object called 'tutorial'
 }
 \keyword{datasets}
-

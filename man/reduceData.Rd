@@ -43,6 +43,7 @@ slots are replaced by a lower-dimensional representation
 
 \item \code{proj = MADproject,method = function,params = function}: Fit \code{method} with parameters and inital guesses for the parameter values
 }}
+
 \examples{
 \dontrun{
 data(pumping)
@@ -51,4 +52,3 @@ plotMAD(pumping.min, "realizations")
 }
 
 }
-

@@ -25,6 +25,7 @@ proj An updated \code{MADproject} object with the
 \itemize{
 \item \code{MADproject}: Calculate the posterior value for each sample
 }}
+
 \examples{
 \dontrun{
 data(pumping)
@@ -33,4 +34,3 @@ pumping.100 <- calcPosterior(pumping.100)
 }
 
 }
-

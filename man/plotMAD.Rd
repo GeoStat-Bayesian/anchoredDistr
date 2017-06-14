@@ -35,6 +35,7 @@ that can be plotted are \code{priors}, \code{observations},
 
 \item \code{x = MADproject,y = character}: Plots the \code{y} slot in the MADproject object
 }}
+
 \examples{
 \dontrun{
 data(pumping)
@@ -45,4 +46,3 @@ plotMAD(pumping)
 }
 
 }
-

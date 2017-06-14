@@ -11,4 +11,3 @@ the Method of Anchored Distributions (MAD) such as viewing data, calculating
 likelihood and posterior distributions,
 testing convergence of likelihood values, and applying dimension reduction.
 }
-

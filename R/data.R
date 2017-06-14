@@ -1,30 +1,15 @@
 #' anchoredDistr example data
 #'
-#' A dataset containing data to create a MADproject object
-#' called 'pumping' without a MAD# database
-#'
-#' @format A vector of observations of indirect data, a
-#' data.frame of prior distribution samples, and a
-#' data.frame of simualted realizations of indirect data
-#' based on the samples.
-#'
-#' \describe{
-#'   \item{obs}{a time series of drawdown, in meters}
-#'   \item{priors}{a data.frame of prior samples and their probability density}
-#'   \item{realizations}{the ensemble of simulated drawdown time series for the samples}
-#' }
-#' @source NULL
-"pumping"
-
-#' anchoredDistr example data
-#'
 #' A dataset containing a MADproject object called 'pumping'
+#'
+#' @docType data
+#'
+#' @usage data(pumping)
 #'
 #' @format A MADproject object with an observed time series, three
 #' prior samples, realizations for each sample, and true values for
 #' validation where the parameter to be inferred is the global mean
 #' of the natural log conductivity of a 2D aquifer.
-#'
 #' \describe{
 #'   \item{@observations}{a time series of drawdown, in meters}
 #'   \item{@numSamples}{the value 3, [unitless]}
@@ -37,11 +22,14 @@
 #'
 #' A dataset containing a MADproject object called 'tutorial'
 #'
+#' @docType data
+#'
+#' @usage data(tutorial)
+#'
 #' @format A MADproject object with an observed head at three wells, 145
 #' prior samples, realizations for each sample, and true values for
 #' validation where the parameters to be inferred are four anchors of the
 #' local decimal log transmissivity of a 1D aquifer
-#'
 #' \describe{
 #'   \item{@observations}{three head measurements, in meters}
 #'   \item{@realizations}{the ensemble of simulated head measurements}
@@ -51,3 +39,23 @@
 #' }
 #' @source \url{http://www.mad.codeplex.com/releases/}
 "tutorial"
+
+#' anchoredDistr example data
+#'
+#' A dataset containing data to create a MADproject object
+#' called 'pumping' without a MAD# database
+#'
+#' @docType data
+#'
+#' @usage data(pumpingInput)
+#'
+#' @format A vector of observations of indirect data, a
+#' data.frame of prior distribution samples, and a
+#' data.frame of simualted realizations of indirect data
+#' based on the samples.
+#' \describe{
+#'   \item{@obs}{a time series of drawdown, in meters}
+#'   \item{@priors}{a data.frame of prior samples and their probability density}
+#'   \item{@realizations}{the ensemble of simulated drawdown time series for the samples}
+#' }
+"pumpingInput"

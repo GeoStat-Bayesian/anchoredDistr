@@ -2,8 +2,8 @@
 % Please edit documentation in R/MADproject.R
 \docType{class}
 \name{MADproject-class}
-\alias{MADproject}
 \alias{MADproject-class}
+\alias{MADproject}
 \title{An S4 class to represent a MAD project}
 \description{
 An S4 class to represent a MAD project

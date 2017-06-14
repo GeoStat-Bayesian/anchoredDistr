@@ -3,8 +3,8 @@
 \docType{methods}
 \name{calcLikelihood}
 \alias{calcLikelihood}
-\alias{calcLikelihood,MADproject,ANY-method}
 \alias{calcLikelihood,MADproject,numeric-method}
+\alias{calcLikelihood,MADproject,ANY-method}
 \title{Calculate the likelihood for the samples in a MADproject object.}
 \usage{
 calcLikelihood(proj, dsubset, num_realz = max(proj@realizations$rid),
@@ -50,6 +50,7 @@ of inversion data \code{zid}
 
 \item \code{proj = MADproject,dsubset = ANY}: Calculates the likelihood using all inversion data \code{zid}
 }}
+
 \examples{
 \dontrun{
 data(pumping)
@@ -57,4 +58,3 @@ pumping <- calcLikelihood(pumping, 100) #Inversion data as time step 100
 }
 
 }
-

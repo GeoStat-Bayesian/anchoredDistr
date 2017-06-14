@@ -3,6 +3,9 @@
 #  install_github("hsavoy/anchoredDistr")
 #  library(anchoredDistr)
 
+## ---- echo=FALSE---------------------------------------------------------
+library(anchoredDistr)
+
 ## ------------------------------------------------------------------------
 data(pumping_input) #contains obs, realizations, and priors
 head(obs)
