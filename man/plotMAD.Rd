@@ -37,12 +37,11 @@ that can be plotted are \code{priors}, \code{observations},
 }}
 
 \examples{
-\dontrun{
 data(pumping)
 plotMAD(pumping, "realizations")
 plotMAD(pumping, "priors")
 plotMAD(pumping, "posteriors")
 plotMAD(pumping)
-}
+
 
 }

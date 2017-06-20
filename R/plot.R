@@ -16,13 +16,12 @@ NULL
 #' "realizations", "priors", or "posteriors"
 #' @return NULL
 #' @examples
-#' \dontrun{
 #' data(pumping)
 #' plotMAD(pumping, "realizations")
 #' plotMAD(pumping, "priors")
 #' plotMAD(pumping, "posteriors")
 #' plotMAD(pumping)
-#' }
+#'
 #'
 #' @import ggplot2
 #' @importFrom Rmisc multiplot

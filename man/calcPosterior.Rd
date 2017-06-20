@@ -27,10 +27,8 @@ proj An updated \code{MADproject} object with the
 }}
 
 \examples{
-\dontrun{
 data(pumping)
 pumping.100 <- calcLikelihood(pumping, 100)
 pumping.100 <- calcPosterior(pumping.100)
-}
 
 }

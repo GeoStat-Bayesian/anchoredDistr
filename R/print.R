@@ -10,10 +10,8 @@ NULL
 #' @param ... Not supported
 #' @return NULL
 #' @examples
-#' \dontrun{
 #' data(pumping)
 #' print(pumping)
-#' }
 #'
 #' @export
 print.MADproject <- function(x, ...) {

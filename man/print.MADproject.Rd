@@ -16,9 +16,7 @@
 in the slots of the provided MADproject.
 }
 \examples{
-\dontrun{
 data(pumping)
 print(pumping)
-}
 
 }

@@ -19,11 +19,9 @@ NULL
 #' @return proj \code{MADproject} object with reduced dimensions
 #' for inversion
 #' @examples
-#' \dontrun{
 #' data(pumping)
 #' pumping.min <- reduceData(pumping, min)
 #' plotMAD(pumping.min, "realizations")
-#' }
 #'
 #' @importFrom stats nls nls.control coefficients
 #' @import dplyr

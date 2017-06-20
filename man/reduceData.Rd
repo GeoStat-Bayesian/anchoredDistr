@@ -45,10 +45,8 @@ slots are replaced by a lower-dimensional representation
 }}
 
 \examples{
-\dontrun{
 data(pumping)
 pumping.min <- reduceData(pumping, min)
 plotMAD(pumping.min, "realizations")
-}
 
 }

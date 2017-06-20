@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">anchoredDistr</h1>
 <h4 class="author"><em>Heather Savoy</em></h4>
-<h4 class="date"><em>Wed Jun 14 2017</em></h4>
+<h4 class="date"><em>Mon Jun 19 2017</em></h4>
 
 
 
@@ -89,20 +89,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <div id="vignette-info" class="section level2">
 <h2>Vignette Info</h2>
-<p>This vignette will step through an example of applying <code>anchoredDistr</code> using the dataset <code>pumping</code>, which contains results from a MAD# project pertaining to characterizing an aquifer’s mean natural-log hydraulic conductivity by using a time series of drawdown (change in hydraulic head) at a monitoring well in the field as inversion data. The <code>MADproject</code> object has slots <code>numSamples</code>, <code>numAnchors</code>, <code>numTheta</code>, <code>observations</code>, <code>priors</code>, <code>true values</code>, <code>numLocations</code> and <code>realizations</code> filled. Normally, the function <code>readMAD</code> would be used to fill in the object from databases produced by MAD#, but this has done already for <code>pumping</code> for a more portable example. This also helps show that the use of MAD# is not entirely necessary: you can fill in a <code>MADproject</code> object with data from another application and still apply the MAD analysis.</p>
-<p>For example, we can load the package:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)
-<span class="kw">install_github</span>(<span class="st">&quot;hsavoy/anchoredDistr&quot;</span>)
-<span class="kw">library</span>(anchoredDistr)</code></pre></div>
+<p>This vignette will step through an example of applying <code>anchoredDistr</code> using the dataset <code>pumping</code>, which contains results from a MAD# project pertaining to characterizing an aquifer’s mean natural-log hydraulic conductivity by using a time series of drawdown (change in hydraulic head) at a monitoring well in the field as inversion data. The <code>MADproject</code> object has slots <code>numSamples</code>, <code>numAnchors</code>, <code>numTheta</code>, <code>observations</code>, <code>priors</code>, <code>true values</code>, <code>numLocations</code> and <code>realizations</code> filled. Normally, the function <code>readMAD</code> would be used to fill in the object from databases produced by MAD#, but this has done already for <code>pumping</code> for a more portable example. However, MAD# is not entirely necessary: you can fill in a <code>MADproject</code> object with data from another application and still apply the MAD analysis.</p>
+<p>For example, we can install and load the package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(anchoredDistr)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(anchoredDistr)</code></pre></div>
 <p>and then create a MADproject object given the following minimum information:</p>
 <ul>
 <li><p>Observations of inversion data: For the pumping example, there is one measurement location with 100 time steps. The format required is a vector of length (number of time steps).</p></li>
 <li><p>Prior distribution samples: The samples of the prior distributions for each strucutural parameter and anchor used. For the pumping example, there are 50 samples of one parameter and no anchors. The required format is a data.frame with columns <code>sid</code> (the sample ID), <code>priordens</code> (the marginal density associated with the sample), <code>tid</code> (the parameter ID), <code>name</code> (the parameter name), and <code>priorvalue</code> (the sampled value of the parameter).</p></li>
-<li><p>Realizations: Simulated values of the inversion data based on each of the prior samples. For the pumping example. The required format is a data.frame with columns <code>sid</code> (the sample ID), <code>rid</code> (the realization ID), <code>zid</code> (the inversion data ID), and <code>value</code> (the simulated value). Below shows the configuration of data in the <code>pumping_input</code> data set and how it can be used to create a MADproject object without a MAD# database.</p></li>
+<li><p>Realizations: Simulated values of the inversion data based on each of the prior samples. For the pumping example. The required format is a data.frame with columns <code>sid</code> (the sample ID), <code>rid</code> (the realization ID), <code>zid</code> (the inversion data ID), and <code>value</code> (the simulated value). Below shows the configuration of raw data in the <code>pumpingInput</code> data set and how it can be used to create a MADproject object without a MAD# database.</p></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(pumping_input) <span class="co">#contains obs, realizations, and priors</span></code></pre></div>
-<pre><code>## Warning in data(pumping_input): data set 'pumping_input' not found</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(obs)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;pumpingInput.RData&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;anchoredDistr&quot;</span>))
+<span class="kw">head</span>(obs)</code></pre></div>
 <pre><code>## [1]   0.000000  -6.771288 -16.222989 -25.283413 -32.980097 -39.244209</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(realizations)</code></pre></div>
 <pre><code>##        sid rid zid      value
@@ -223,7 +221,7 @@ pumping.matern &lt;-<span class="st"> </span><span class="kw">calcPosterior</spa
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

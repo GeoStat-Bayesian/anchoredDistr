@@ -1,13 +1,11 @@
 ## ---- eval=FALSE---------------------------------------------------------
-#  library(devtools)
-#  install_github("hsavoy/anchoredDistr")
-#  library(anchoredDistr)
+#  install.packages(anchoredDistr)
 
-## ---- echo=FALSE---------------------------------------------------------
+## ------------------------------------------------------------------------
 library(anchoredDistr)
 
 ## ------------------------------------------------------------------------
-data(pumping_input) #contains obs, realizations, and priors
+load(system.file("extdata", "pumpingInput.RData", package = "anchoredDistr"))
 head(obs)
 head(realizations)
 head(priors)
