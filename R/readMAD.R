@@ -23,6 +23,7 @@ NULL
 #' }
 #'
 #' @import np
+#' @importFrom plyr adply dlply .
 #'
 #' @export
 setGeneric("readMAD", function(proj, location) {
@@ -53,7 +54,7 @@ setMethod("readMAD",
 
             #Read realizations
             for(sample in 1:proj@numSamples){
-              dbs=paste(datasample,sample,".xdata",sep='')
+              dbs <- paste(datasample,sample,".xdata",sep='')
               if (file.exists(dbs)){
                 consa <- RSQLite::dbConnect(DBI::dbDriver("SQLite"), dbname =dbs)
 
@@ -90,14 +91,14 @@ setMethod("readMAD",
             }
             #Read priors
             param.names <- as.character(unlist(RSQLite::dbGetQuery( con,"SELECT DISTINCT fieldname FROM priordata")))
-            priordata <- as.data.frame(t(plyr::adply(param.names, .margins=1, .id=NULL,
+            priordata <- as.data.frame(t(adply(param.names, .margins=1, .id=NULL,
                                 function(name){
                     return(RSQLite::dbGetQuery( con,paste0("SELECT value FROM priordata WHERE fieldname like '",name,"'"))[1:proj@numSamples,1])
                   }
             )))
             priordata$sid <- 1:proj@numSamples
             priordata <- reshape2::melt(priordata, "sid")
-            tmp <- as.data.frame(plyr::dlply(priordata, .(variable), function(param){
+            tmp <- as.data.frame(dlply(priordata, .(variable), function(param){
               npudens(tdat=param$value,
                       edat=param$value)$dens
             }))
@@ -114,6 +115,7 @@ setMethod("readMAD",
             #Read true values
             tvals <- as.numeric(unlist(RSQLite::dbGetQuery( con,"SELECT value FROM truevalues")))
             proj@truevalues <- data.frame(tid=1:length(tvals), value=tvals)
+            RSQLite::dbDisconnect(con)
             return(proj)
           }
           )
