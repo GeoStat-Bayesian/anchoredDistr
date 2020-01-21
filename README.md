@@ -1,6 +1,6 @@
 # anchoredDistr
 
-The goal of anchoredDistr R package is to provide post-processing for Method of Achrored Distributions.
+The goal of anchoredDistr R package is to provide post-processing for Method of Anchored Distributions.
 
 Installation
 ------------
