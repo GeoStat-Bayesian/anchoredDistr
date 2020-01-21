@@ -37,7 +37,7 @@ Collate:
     'readMAD.R'
     'reduceData.R'
     'test_convergence.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Suggests:
     knitr,
     rmarkdown

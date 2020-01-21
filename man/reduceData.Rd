@@ -12,8 +12,8 @@ reduceData(proj, method, params, ...)
 
 \S4method{reduceData}{MADproject,`function`,ANY}(proj, method)
 
-\S4method{reduceData}{MADproject,`function`,`function`}(proj, method, params,
-  ...)
+\S4method{reduceData}{MADproject,`function`,`function`}(proj, method,
+  params, ...)
 }
 \arguments{
 \item{proj}{\code{MADproject} object that has been filled by

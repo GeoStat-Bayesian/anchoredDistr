@@ -8,6 +8,8 @@
 [![CRAN/METACRAN](https://img.shields.io/cran/v/anchoredDistr)](https://cran.r-project.org/web/packages/anchoredDistr/index.html)
 [![License: GPL
 v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+[![Travis build
+status](https://travis-ci.org/GeoStat-Bayesian/anchoredDistr.svg?branch=master)](https://travis-ci.org/GeoStat-Bayesian/anchoredDistr)
 <!-- badges: end -->
 
 The goal of the anchoredDistr R package is to provide post-processing
