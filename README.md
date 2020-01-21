@@ -13,8 +13,9 @@ status](https://travis-ci.org/GeoStat-Bayesian/anchoredDistr.svg?branch=master)]
 <!-- badges: end -->
 
 The goal of the anchoredDistr R package is to provide post-processing
-for Method of Anchored Distributions (MAD). MAD is a framework for
-Bayesian inference in geostatistics
+for Method of Anchored Distributions (MAD). The software itself can be
+found at <http://mad.codeplex.com/>. MAD is a framework for Bayesian
+inference in geostatistics
 ([Rubin, 2010](https://doi.org/10.1029/2009wr008799)) and it has already
 found a number of applications in different fields of earth sciences
 ([Murakami, 2010](https://doi.org/10.5194/hess-14-1989-2010)),
