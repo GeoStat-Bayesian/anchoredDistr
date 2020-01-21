@@ -6,11 +6,13 @@
 <!-- badges: start -->
 
 [![CRAN/METACRAN](https://img.shields.io/cran/v/anchoredDistr)](https://cran.r-project.org/web/packages/anchoredDistr/index.html)
+[![License: GPL
+v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 <!-- badges: end -->
 
-The goal of anchoredDistr R package is to provide post-processing for
-Method of Anchored Distributions (MAD). MAD is a framework for Bayesian
-inference in geostatistics
+The goal of the anchoredDistr R package is to provide post-processing
+for Method of Anchored Distributions (MAD). MAD is a framework for
+Bayesian inference in geostatistics
 ([Rubin, 2010](https://doi.org/10.1029/2009wr008799)) and it has already
 found a number of applications in different fields of earth sciences
 ([Murakami, 2010](https://doi.org/10.5194/hess-14-1989-2010)),
