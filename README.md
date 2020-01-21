@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![CRAN/METACRAN](https://img.shields.io/cran/v/anchoredDistr)](https://cran.r-project.org/web/packages/anchoredDistr/index.html)
 <!-- badges: end -->
 
 The goal of anchoredDistr R package is to provide post-processing for
